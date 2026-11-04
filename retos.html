@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Formularios | Mi Tiempo, Mi Cambio</title>
+
+<style>
+:root {
+    --morado: #6550bd;
+    --oscuro: #44318f;
+    --rosa: #f28bc2;
+    --fondo: #f5effb;
+    --texto: #292333;
+    --borde: #c9b8e8;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: var(--fondo);
+    color: var(--texto);
+    line-height: 1.5;
+}
+
+/* BARRA DE NAVEGACIÓN */
+header {
+    background: linear-gradient(100deg, var(--oscuro), var(--morado));
+}
+
+nav {
+    padding: 18px clamp(18px, 6vw, 80px);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+    flex-wrap: wrap;
+    box-shadow: 0 5px 20px #44318f30;
+}
+
+.logo {
+    color: white;
+    font-size: clamp(18px, 2vw, 23px);
+    font-weight: 800;
+}
+
+.enlaces {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.enlaces a {
+    color: white;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 650;
+    padding: 10px 14px;
+    border-radius: 999px;
+    transition: .25s;
+}
+
+.enlaces a:hover,
+.enlaces a.activo {
+    background: white;
+    color: var(--oscuro);
+    transform: translateY(-2px);
+}
+
+/* FRANJA DE COLORES */
+.barra {
+    height: 8px;
+    background: linear-gradient(
+        90deg,
+        var(--rosa),
+        #bba5ff,
+        var(--morado)
+    );
+}
+
+/* CONTENIDO */
+main {
+    width: min(1100px, 92%);
+    margin: 35px auto 45px;
+}
+
+.intro {
+    margin-bottom: 22px;
+}
+
+.intro h1 {
+    color: var(--oscuro);
+    font-size: clamp(25px, 4vw, 34px);
+    margin-bottom: 8px;
+}
+
+.intro p {
+    color: #655b78;
+}
+
+/* PESTAÑAS */
+.tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 22px 0;
+}
+
+.tab {
+    border: 2px solid var(--morado);
+    border-radius: 24px;
+    padding: 11px 18px;
+    background: white;
+    color: var(--morado);
+    font-weight: bold;
+    font-size: 14px;
+    cursor: pointer;
+    transition: .25s;
+}
+
+.tab.active,
+.tab:hover {
+    background: var(--morado);
+    color: white;
+}
+
+/* FORMULARIOS */
+.panel {
+    display: none;
+    background: white;
+    border: 2px solid var(--morado);
+    border-radius: 16px;
+    padding: clamp(18px, 4vw, 30px);
+    box-shadow: 0 8px 24px #48307814;
+}
+
+.panel.active {
+    display: block;
+}
+
+h2 {
+    color: var(--morado);
+    margin-bottom: 8px;
+}
+
+.aviso {
+    font-size: 14px;
+    color: #655b78;
+    margin-bottom: 24px;
+}
+
+.pregunta {
+    margin-bottom: 20px;
+}
+
+label,
+.titulo-grupo {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 7px;
+    font-size: 15px;
+}
+
+input[type="text"],
+input[type="date"],
+input[type="time"],
+input[type="number"],
+select,
+textarea {
+    width: 100%;
+    padding: 11px;
+    border: 2px solid var(--borde);
+    border-radius: 8px;
+    font: inherit;
+    color: var(--texto);
+    background: white;
+}
+
+textarea {
+    resize: vertical;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    outline: 2px solid var(--morado);
+    border-color: var(--morado);
+}
+
+.opciones {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 20px;
+}
+
+.opciones label {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-weight: normal;
+    margin: 0;
+}
+
+.opciones input {
+    accent-color: var(--morado);
+}
+
+/* BOTONES */
+.acciones {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 25px;
+}
+
+.btn {
+    background: var(--morado);
+    color: white;
+    border: 0;
+    border-radius: 25px;
+    padding: 12px 22px;
+    font: inherit;
+    font-weight: bold;
+    cursor: pointer;
+    transition: .25s;
+}
+
+.btn:hover {
+    background: #e45b9b;
+}
+
+.btn.sec {
+    background: white;
+    color: var(--morado);
+    border: 2px solid var(--morado);
+}
+
+.btn.sec:hover {
+    background: #f5effb;
+}
+
+/* MENSAJES */
+.notice {
+    display: none;
+    margin-top: 18px;
+    padding: 13px;
+    border-radius: 9px;
+    background: #e9f8ec;
+    color: #205b2b;
+    border: 1px solid #a9d9b1;
+    overflow-wrap: anywhere;
+}
+
+.notice.error {
+    background: #fff0f0;
+    color: #922b35;
+    border-color: #f0b7bd;
+}
+
+/* PIE DE PÁGINA */
+footer {
+    background: var(--oscuro);
+    color: white;
+    text-align: center;
+    padding: 22px;
+    font-size: 13px;
+}
+
+/* CELULARES */
+@media(max-width:760px) {
+    nav {
+        justify-content: center;
+    }
+
+    .logo {
+        width: 100%;
+        text-align: center;
+    }
+
+    .enlaces {
+        justify-content: center;
+    }
+}
+
+@media(max-width:600px) {
+    .acciones .btn {
+        width: 100%;
+    }
+
+    .tabs {
+        flex-direction: column;
+    }
+
+    .tab {
+        width: 100%;
+    }
+}
+
+@media(max-width:430px) {
+    .enlaces {
+        gap: 3px;
+    }
+
+    .enlaces a {
+        padding: 9px 10px;
+        font-size: 12px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- BARRA DE NAVEGACIÓN -->
+<header>
+    <nav>
+        <div class="logo">◉ Mi Tiempo, Mi Cambio ♡</div>
+
+        <div class="enlaces">
+            <a href="index.html">Inicio</a>
+            <a href="informacion.html">Información</a>
+            <a href="retos.html" class="activo">Retos</a>
+            <a href="resultados.html">Resultados</a>
+        </div>
+    </nav>
+</header>
+
+<div class="barra"></div>
+
+<main>
+
+    <section class="intro">
+        <h1>Registro de puntualidad y uso del teléfono</h1>
+        <p>
+            Contesta los formularios y registra tus hábitos.
+            Consulta los resultados en la gráfica semanal.
+        </p>
+    </section>
+
+    <!-- PESTAÑAS DE LOS DOS FORMULARIOS -->
+    <div class="tabs" id="formularios">
+        <button
+            type="button"
+            class="tab active"
+            data-panel="puntualidad">
+            Formulario 1: Puntualidad
+        </button>
+
+        <button
+            type="button"
+            class="tab"
+            data-panel="telefono">
+            Formulario 2: Uso del teléfono
+        </button>
+    </div>
+
+    <!-- FORMULARIO 1: PUNTUALIDAD -->
+    <section class="panel active" id="panel-puntualidad">
+
+        <h2>Formulario 1: Puntualidad</h2>
+
+        <p class="aviso">
+            Registra tu hora de llegada a la prepa.
+            Los campos con * son obligatorios.
+        </p>
+
+        <form id="form-puntualidad">
+
+            <div class="pregunta">
+                <label for="p-nombre">Crea tu nombre (no personal)*</label>
+                <input
+                    type="text"
+                    id="p-nombre"
+                    name="nombre"
+                    required
+                    maxlength="100"
+                    placeholder="Escribe tu nombre">
+            </div>
+
+            <div class="pregunta">
+                <label for="p-grupo">Grupo o salón *</label>
+                <input
+                    type="text"
+                    id="p-grupo"
+                    name="grupo"
+                    required
+                    placeholder="Ej. 3A">
+            </div>
+
+            <div class="pregunta">
+                <label for="p-fecha">Fecha del registro *</label>
+                <input type="date" id="p-fecha" name="fecha" required>
+            </div>
+             <div class="pregunta">
+                <label for="p-hora-llegada">
+                    ¿A qué hora entras a la prepa? *
+                </label>
+                <input
+                    type="time"
+                    id="p-hora-llegada"
+                    name="horaLlegada"
+                    required>
+            </div>
+
+
+            <div class="pregunta">
+                <label for="p-hora-llegada">
+                    ¿A qué hora llegas a la prepa? *
+                </label>
+                <input
+                    type="time"
+                    id="p-hora-llegada"
+                    name="horaLlegada"
+                    required>
+            </div>
+
+            <div class="pregunta">
+                <label for="p-hora-salida">
+                    ¿A qué hora sales de casa para venir a la prepa?
+                </label>
+                <input
+                    type="time"
+                    id="p-hora-salida"
+                    name="horaSalidaCasa">
+            </div>
+
+            <div class="pregunta">
+                <span class="titulo-grupo">
+                    ¿Qué día de la semana asistes a la prepa?
+                </span>
+
+                <div class="opciones">
+                    <label><input type="checkbox" name="diaSemana" value="Lunes"> Lunes</label>
+                    <label><input type="checkbox" name="diaSemana" value="Martes"> Martes</label>
+                    <label><input type="checkbox" name="diaSemana" value="Miércoles"> Miércoles</label>
+                    <label><input type="checkbox" name="diaSemana" value="Jueves"> Jueves</label>
+                    <label><input type="checkbox" name="diaSemana" value="Viernes"> Viernes</label>
+                    <label><input type="checkbox" name="diaSemana" value="Sábado"> Sábado</label>
+                    <label><input type="checkbox" name="diaSemana" value="Domingo"> Domingo</label>
+                </div>
+            </div>
+
+            <div class="pregunta">
+                <span class="titulo-grupo">
+                    1. ¿Con qué frecuencia llegas puntual a clases? *
+                </span>
+
+                <div class="opciones">
+                    <label><input type="radio" name="frecuencia" value="Siempre" required> Siempre</label>
+                    <label><input type="radio" name="frecuencia" value="Casi siempre"> Casi siempre</label>
+                    <label><input type="radio" name="frecuencia" value="A veces"> A veces</label>
+                    <label><input type="radio" name="frecuencia" value="Nunca"> Nunca</label>
+                </div>
+            </div>
+
+            <div class="pregunta">
+                <label for="p-motivo">
+                    2. Si llegas tarde, ¿cuál es el motivo principal?
+                </label>
+
+                <select id="p-motivo" name="motivo">
+                    <option value="">Selecciona una opción</option>
+                    <option>Transporte</option>
+                    <option>Dificultad para despertar o prepararme</option>
+                    <option>Situaciones familiares</option>
+                    <option>Falta de organización del tiempo</option>
+                    <option>Otro motivo</option>
+                    <option>No suelo llegar tarde</option>
+                </select>
+            </div>
+
+            <div class="pregunta">
+                <span class="titulo-grupo">
+                    3. ¿Consideras importante la puntualidad? *
+                </span>
+
+                <div class="opciones">
+                    <label><input type="radio" name="importancia" value="Sí" required> Sí</label>
+                    <label><input type="radio" name="importancia" value="No"> No</label>
+                    <label><input type="radio" name="importancia" value="A veces"> A veces</label>
+                </div>
+            </div>
+
+            <div class="pregunta">
+                <label for="p-mejora">
+                    4. ¿Qué podrías hacer para mejorar tu puntualidad?
+                </label>
+                <textarea
+                    id="p-mejora"
+                    name="mejora"
+                    rows="3"
+                    placeholder="Escribe tu respuesta..."></textarea>
+            </div>
+
+            <div class="acciones">
+                <button class="btn" type="submit">Guardar respuestas</button>
+                <button class="btn sec" type="reset">Limpiar formulario</button>
+            </div>
+
+        </form>
+
+        <div class="notice" id="notice-puntualidad" role="status"></div>
+    </section>
+
+    <!-- FORMULARIO 2: USO DEL TELÉFONO -->
+    <section class="panel" id="panel-telefono">
+
+        <h2>Formulario 2: Mi tiempo sin teléfono</h2>
+
+        <p class="aviso">
+            Registra cuánto tiempo lograste estar sin usar el teléfono
+            y cómo te sentiste. El tiempo registrado se guarda para
+            calcular la gráfica semanal.
+        </p>
+
+        <form id="form-telefono">
+
+            <div class="pregunta">
+                <label for="t-nombre">Crea tu nombre (no personal)*</label>
+                <input
+                    type="text"
+                    id="t-nombre"
+                    name="nombre"
+                    required
+                    maxlength="100"
+                    placeholder="Escribe tu nombre">
+            </div>
+
+            <div class="pregunta">
+                <label for="t-grupo">Grupo o salón *</label>
+                <input
+                    type="text"
+                    id="t-grupo"
+                    name="grupo"
+                    required
+                    placeholder="Ej. 3A">
+            </div>
+
+            <div class="pregunta">
+                <label for="t-fecha">
+                    Día en que dejaste el teléfono *
+                </label>
+                <input type="date" id="t-fecha" name="fecha" required>
+            </div>
+
+            <div class="pregunta">
+                <label for="t-horas">
+                    ¿Cuántas horas completas estuviste sin usar el teléfono? *
+                </label>
+                <input
+                    type="number"
+                    id="t-horas"
+                    name="horasSinTelefono"
+                    min="0"
+                    max="24"
+                    step="1"
+                    required
+                    placeholder="Ej. 2">
+            </div>
+
+            <div class="pregunta">
+                <label for="t-minutos">
+                    ¿Cuántos minutos adicionales?
+                    (si no hubo, escribe 0) *
+                </label>
+                <input
+                    type="number"
+                    id="t-minutos"
+                    name="minutosSinTelefono"
+                    min="0"
+                    max="59"
+                    step="1"
+                    required
+                    value="0">
+            </div>
+
+            <div class="pregunta">
+                <label for="t-momento">
+                    ¿En qué momento o actividad dejaste de usar el teléfono?
+                </label>
+                <textarea
+                    id="t-momento"
+                    name="momentoSinTelefono"
+                    rows="3"
+                    placeholder="Describe cuándo y qué estabas haciendo..."></textarea>
+            </div>
+
+            <div class="pregunta">
+                <label for="t-sentimientos">
+                    ¿Cómo te sentiste durante ese tiempo sin el teléfono?
+                </label>
+                <textarea
+                    id="t-sentimientos"
+                    name="sentimientos"
+                    rows="3"
+                    placeholder="Cuenta cómo te sentiste y por qué..."></textarea>
+            </div>
+
+            <div class="pregunta">
+                <label for="t-dificultad">
+                    ¿Qué fue lo más difícil de estar sin el teléfono?
+                </label>
+                <textarea
+                    id="t-dificultad"
+                    name="dificultad"
+                    rows="3"
+                    placeholder="Explica qué se te hizo difícil..."></textarea>
+            </div>
+
+            <div class="pregunta">
+                <label for="t-actividad">
+                    ¿Qué hiciste en lugar de usar el teléfono?
+                </label>
+                <textarea
+                    id="t-actividad"
+                    name="actividadAlternativa"
+                    rows="3"
+                    placeholder="Describe las actividades que realizaste..."></textarea>
+            </div>
+
+            <div class="pregunta">
+                <label for="t-aprendizaje">
+                    ¿Qué aprendiste de esta experiencia y qué cambiarías
+                    para pasar más tiempo sin el teléfono?
+                </label>
+                <textarea
+                    id="t-aprendizaje"
+                    name="aprendizaje"
+                    rows="3"
+                    placeholder="Escribe tu reflexión..."></textarea>
+            </div>
+
+            <div class="acciones">
+                <button class="btn" type="submit">Guardar respuestas</button>
+                <button class="btn sec" type="reset">Limpiar formulario</button>
+            </div>
+
+        </form>
+
+        <div class="notice" id="notice-telefono" role="status"></div>
+    </section>
+
+</main>
+
+<footer>
+    Mi Tiempo, Mi Cambio · Cada hábito cuenta ♡
+</footer>
+
+<script>
+/*
+  Los dos formularios utilizan almacenamiento local.
+  La clave se comparte con la página de resultados.
+*/
+const CLAVE = "formulariosEscolares_v1";
+
+function fechaHoy() {
+    const fecha = new Date();
+    return new Date(
+        fecha.getTime() - fecha.getTimezoneOffset() * 60000
+    ).toISOString().slice(0, 10);
+}
+
+/* FECHA INICIAL */
+document.getElementById("p-fecha").value = fechaHoy();
+document.getElementById("t-fecha").value = fechaHoy();
+
+/* CAMBIAR ENTRE FORMULARIO 1 Y FORMULARIO 2 */
+const pestañas = document.querySelectorAll(".tab");
+
+pestañas.forEach(function(tab) {
+    tab.addEventListener("click", function() {
+        const nombrePanel = tab.dataset.panel;
+
+        document.querySelectorAll(".tab").forEach(function(elemento) {
+            elemento.classList.remove("active");
+        });
+
+        document.querySelectorAll(".panel").forEach(function(panel) {
+            panel.classList.remove("active");
+        });
+
+        tab.classList.add("active");
+        document.getElementById("panel-" + nombrePanel)
+            .classList.add("active");
+    });
+});
+
+/* LEER LOS REGISTROS GUARDADOS */
+function obtenerRegistros() {
+    try {
+        const datos = localStorage.getItem(CLAVE);
+        const registros = datos ? JSON.parse(datos) : {};
+
+        if (!registros || typeof registros !== "object" ||
+            Array.isArray(registros)) {
+            return {
+                puntualidad: [],
+                telefono: []
+            };
+        }
+
+        if (!Array.isArray(registros.puntualidad)) {
+            registros.puntualidad = [];
+        }
+
+        if (!Array.isArray(registros.telefono)) {
+            registros.telefono = [];
+        }
+
+        return registros;
+    } catch (error) {
+        return {
+            puntualidad: [],
+            telefono: []
+        };
+    }
+}
+
+/* GUARDAR REGISTROS */
+function guardarRegistros(registros) {
+    try {
+        localStorage.setItem(CLAVE, JSON.stringify(registros));
+        return true;
+    } catch (error) {
+        return false;
+    }
+}
+
+/* MOSTRAR MENSAJES */
+function mostrarAviso(id, mensaje, error = false) {
+    const aviso = document.getElementById(id);
+
+    aviso.textContent = mensaje;
+    aviso.classList.toggle("error", error);
+    aviso.style.display = "block";
+}
+
+/* CONVERTIR UN FORMULARIO A OBJETO */
+function obtenerRespuestas(formulario) {
+    const datos = new FormData(formulario);
+    const respuestas = {};
+
+    for (const [nombre, valor] of datos.entries()) {
+        if (nombre === "diaSemana") {
+            if (!respuestas.diaSemana) {
+                respuestas.diaSemana = [];
+            }
+
+            respuestas.diaSemana.push(valor);
+        } else {
+            respuestas[nombre] = valor;
+        }
+    }
+
+    return respuestas;
+}
+
+/* GUARDAR FORMULARIO 1: PUNTUALIDAD */
+document.getElementById("form-puntualidad")
+    .addEventListener("submit", function(evento) {
+        evento.preventDefault();
+
+        const respuestas = obtenerRespuestas(this);
+        const registros = obtenerRegistros();
+
+        respuestas.tipo = "puntualidad";
+        respuestas.fechaGuardado = new Date().toISOString();
+
+        registros.puntualidad.push(respuestas);
+
+        if (!guardarRegistros(registros)) {
+            registros.puntualidad.pop();
+
+            mostrarAviso(
+                "notice-puntualidad",
+                "No se pudieron guardar las respuestas. Revisa el almacenamiento del navegador.",
+                true
+            );
+            return;
+        }
+
+        mostrarAviso(
+            "notice-puntualidad",
+            "¡Respuestas de puntualidad guardadas correctamente! ♡"
+        );
+
+        this.reset();
+        document.getElementById("p-fecha").value = fechaHoy();
+    });
+
+/* GUARDAR FORMULARIO 2: USO DEL TELÉFONO */
+document.getElementById("form-telefono")
+    .addEventListener("submit", function(evento) {
+        evento.preventDefault();
+
+        const respuestas = obtenerRespuestas(this);
+
+        const horas = Number(respuestas.horasSinTelefono);
+        const minutos = Number(respuestas.minutosSinTelefono);
+
+        if (!Number.isInteger(horas) || horas < 0 || horas > 24) {
+            mostrarAviso(
+                "notice-telefono",
+                "Escribe una cantidad válida de horas entre 0 y 24.",
+                true
+            );
+            return;
+        }
+
+        if (!Number.isInteger(minutos) || minutos < 0 || minutos > 59) {
+            mostrarAviso(
+                "notice-telefono",
+                "Escribe una cantidad válida de minutos entre 0 y 59.",
+                true
+            );
+            return;
+        }
+
+        const totalMinutos = horas * 60 + minutos;
+
+        if (totalMinutos > 1440) {
+            mostrarAviso(
+                "notice-telefono",
+                "El tiempo sin teléfono no puede superar las 24 horas.",
+                true
+            );
+            return;
+        }
+
+        respuestas.tipo = "telefono";
+        respuestas.totalMinutosSinTelefono = totalMinutos;
+        respuestas.totalHorasSinTelefono = totalMinutos / 60;
+        respuestas.fechaGuardado = new Date().toISOString();
+
+        const registros = obtenerRegistros();
+        registros.telefono.push(respuestas);
+
+        if (!guardarRegistros(registros)) {
+            registros.telefono.pop();
+
+            mostrarAviso(
+                "notice-telefono",
+                "No se pudieron guardar las respuestas. Revisa el almacenamiento del navegador.",
+                true
+            );
+            return;
+        }
+
+        mostrarAviso(
+            "notice-telefono",
+            "¡Respuestas guardadas correctamente! Tiempo sin teléfono: " +
+            horas + " h y " + minutos + " min. ♡"
+        );
+
+        this.reset();
+        document.getElementById("t-fecha").value = fechaHoy();
+        document.getElementById("t-minutos").value = "0";
+    });
+
+/* LIMPIAR MENSAJES CUANDO SE REINICIA UN FORMULARIO */
+document.querySelectorAll("form").forEach(function(formulario) {
+    formulario.addEventListener("reset", function() {
+        const aviso = formulario.parentElement.querySelector(".notice");
+
+        if (aviso) {
+            aviso.style.display = "none";
+            aviso.textContent = "";
+            aviso.classList.remove("error");
+        }
+    });
+});
+</script>
+
+</body>
+</html>
+```

@@ -1,0 +1,1188 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Gráficas y resultados escolares</title>
+
+    <style>
+        /* ===== CONFIGURACIÓN GENERAL ===== */
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --morado: #6848c7;
+            --morado2: #7863b0;
+            --rosa: #e45b9b;
+            --fondo: #f5effb;
+            --texto: #292333;
+            --borde: #c9b8e8;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: var(--fondo);
+            color: var(--texto);
+            line-height: 1.5;
+        }
+
+        /* ===== BARRA DE NAVEGACIÓN UNIFICADA ===== */
+
+        header {
+            background: transparent;
+            color: white;
+        }
+
+        nav {
+            padding: 18px clamp(18px, 6vw, 80px);
+            background: linear-gradient(100deg, #44318f, #6550bd);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 18px;
+            flex-wrap: wrap;
+            box-shadow: 0 5px 20px #44318f30;
+        }
+
+        .logo {
+            color: #fff;
+            font-size: clamp(18px, 2vw, 23px);
+            font-weight: 800;
+        }
+
+        .enlaces {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .enlaces a {
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 650;
+            padding: 10px 14px;
+            border-radius: 999px;
+            transition: .25s;
+        }
+
+        .enlaces a:hover,
+        .enlaces a.activo {
+            background: white;
+            color: #44318f;
+            transform: translateY(-2px);
+        }
+
+        .barra {
+            height: 8px;
+            background: linear-gradient(90deg, #f28bc2, #bba5ff, #6550bd);
+        }
+
+        /* ===== CONTENIDO PRINCIPAL ===== */
+
+        main {
+            width: min(1100px, 92%);
+            margin: 28px auto 45px;
+        }
+
+        h1,
+        h2 {
+            color: var(--morado);
+            margin-bottom: 8px;
+        }
+
+        .intro {
+            margin-bottom: 22px;
+        }
+
+        /* ===== TARJETA DE GRÁFICAS Y RESULTADOS ===== */
+
+        .graph-card {
+            margin-top: 10px;
+            background: white;
+            border: 2px solid var(--borde);
+            border-radius: 16px;
+            padding: 22px;
+        }
+
+        .graph-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 12px;
+        }
+
+        /* ===== BOTONES ===== */
+
+        .btn {
+            background: var(--morado);
+            color: white;
+            border: 0;
+            border-radius: 25px;
+            padding: 12px 22px;
+            font: inherit;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background: var(--rosa);
+        }
+
+        .btn.sec {
+            background: white;
+            color: var(--morado);
+            border: 2px solid var(--morado);
+        }
+
+        /* ===== CONTADORES DE RESPUESTAS ===== */
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 12px;
+            margin: 16px 0;
+        }
+
+        .stat {
+            background: var(--fondo);
+            border-radius: 12px;
+            padding: 15px;
+        }
+
+        .stat span {
+            display: block;
+            font-size: 13px;
+        }
+
+        .stat strong {
+            font-size: 25px;
+            color: var(--morado);
+        }
+
+        /* ===== GRÁFICA ===== */
+
+        canvas {
+            display: block;
+            width: 100%;
+            height: 300px;
+        }
+
+        .graph-note {
+            font-size: 13px;
+            color: #5c5368;
+            margin-top: 8px;
+        }
+
+        /* ===== TABLA DE RESPUESTAS ===== */
+
+        .records {
+            margin-top: 24px;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        th,
+        td {
+            text-align: left;
+            padding: 10px;
+            border-bottom: 1px solid #e5dff0;
+        }
+
+        th {
+            background: var(--fondo);
+        }
+
+        .empty {
+            text-align: center;
+            padding: 20px;
+        }
+
+        /* ===== ACCIONES ===== */
+
+        .acciones {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 24px;
+        }
+
+        /* ===== PIE DE PÁGINA ===== */
+
+        footer {
+            background: var(--morado2);
+            color: white;
+            text-align: center;
+            padding: 18px;
+        }
+
+
+        /* ===== DIAGNÓSTICO PERSONALIZADO ===== */
+        .diagnosticos {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 14px;
+            margin-top: 16px;
+        }
+
+        .diagnostico-card {
+            background: #fbf8ff;
+            border: 1px solid var(--borde);
+            border-left: 5px solid var(--morado);
+            border-radius: 12px;
+            padding: 16px;
+            overflow-wrap: anywhere;
+        }
+
+        .diagnostico-card.telefono {
+            border-left-color: var(--rosa);
+        }
+
+        .diagnostico-card h4 {
+            color: var(--morado);
+            margin-top: 14px;
+            margin-bottom: 5px;
+            font-size: 15px;
+        }
+
+        .diagnostico-card h3 {
+            color: var(--morado);
+            margin-bottom: 8px;
+            font-size: 17px;
+        }
+
+        .diagnostico-card.telefono h3 {
+            color: #b83276;
+        }
+
+        .diagnostico-card p {
+            margin: 7px 0;
+        }
+
+        .diagnostico-card ul {
+            padding-left: 20px;
+            margin-top: 6px;
+        }
+
+        .diagnostico-card li {
+            margin: 5px 0;
+        }
+
+        .diagnostico-vacio {
+            background: var(--fondo);
+            padding: 16px;
+            border-radius: 10px;
+            margin-top: 12px;
+        }
+
+        .diagnostico-nota {
+            font-size: 13px;
+            color: #5c5368;
+            margin-top: 12px;
+        }
+
+        /* ===== DISEÑO RESPONSIVO ===== */
+
+        @media (max-width: 760px) {
+            nav {
+                justify-content: center;
+            }
+
+            .logo {
+                width: 100%;
+                text-align: center;
+            }
+
+            .enlaces {
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 430px) {
+            .enlaces {
+                gap: 3px;
+            }
+
+            .enlaces a {
+                padding: 9px 10px;
+                font-size: 12px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .stats {
+                grid-template-columns: 1fr;
+            }
+
+            canvas {
+                height: 250px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ===== BARRA DE NAVEGACIÓN ===== -->
+
+    <header>
+        <nav>
+            <div class="logo">◉ Mi Tiempo, Mi Cambio ♡</div>
+
+            <div class="enlaces">
+                <a href="index.html">Inicio</a>
+                <a href="informacion.html">Informacion</a>
+                <a href="retos.html">Retos</a>
+                <a href="resultados.html" class="activo">Resultados</a>
+            </div>
+        </nav>
+    </header>
+
+    <div class="barra"></div>
+
+    <!-- ===== CONTENIDO PRINCIPAL ===== -->
+
+    <main>
+
+        <!-- Introducción -->
+
+        <section class="intro">
+            <h1>Resultados de puntualidad y uso del teléfono</h1>
+
+            <p>
+                Consulta las respuestas y el total de horas que cada persona
+                logró estar sin usar el teléfono por día.
+            </p>
+        </section>
+
+        <!-- Tarjeta de resultados -->
+
+        <section class="graph-card" id="resultados">
+
+            <!-- Encabezado de la gráfica -->
+
+            <div class="graph-head">
+                <h2>Gráfica semanal</h2>
+            </div>
+
+            <p>
+                En los últimos siete días, la gráfica muestra las respuestas
+                de puntualidad y el total de horas que cada persona logró
+                estar sin usar el teléfono por día.
+            </p>
+
+            <!-- Contadores -->
+
+            <div class="stats">
+
+                <div class="stat">
+                    <span>Respuestas de puntualidad</span>
+                    <strong id="total-p">0</strong>
+                </div>
+
+                <div class="stat">
+                    <span>Registros de tiempo sin teléfono</span>
+                    <strong id="total-t">0</strong>
+                </div>
+
+                <div class="stat">
+                    <span>Total de respuestas</span>
+                    <strong id="total-general">0</strong>
+                </div>
+
+            </div>
+
+            <!-- Gráfica semanal -->
+
+            <canvas
+                id="grafica"
+                aria-label="Gráfica semanal de respuestas">
+            </canvas>
+
+            <p class="graph-note">
+                Morado: registros de puntualidad. Rosa: horas sin teléfono
+                acumuladas por día. El tiempo se suma usando las horas y
+                minutos registrados en el formulario 2.
+            </p>
+
+
+            <!-- ===== DIAGNÓSTICO SEGÚN LAS RESPUESTAS ===== -->
+            <section class="records" id="seccion-diagnosticos">
+                <h2>Diagnóstico personalizado</h2>
+                <p>
+                    Revisa las observaciones y recomendaciones generadas a partir
+                    de las respuestas más recientes de cada formulario.
+                </p>
+                <div id="diagnosticos" class="diagnosticos">
+                    <p class="diagnostico-vacio">
+                        Todavía no hay respuestas suficientes para generar un diagnóstico.
+                        Contesta uno o ambos formularios para ver recomendaciones.
+                    </p>
+                </div>
+                <p class="diagnostico-nota">
+                    Este diagnóstico es orientativo y educativo. No es una evaluación
+                    médica ni define a la persona; las recomendaciones se basan únicamente
+                    en las respuestas registradas en este navegador.
+                </p>
+            </section>
+
+            <!-- Tabla de respuestas -->
+
+            <div class="records">
+
+                <h2>Respuestas guardadas</h2>
+
+                <div id="tabla-respuestas"></div>
+
+                <!-- Botón para borrar datos -->
+
+                <div class="acciones">
+                    <button
+                        class="btn sec"
+                        id="borrar-datos"
+                        type="button">
+
+                        Borrar todos los datos
+
+                    </button>
+                </div>
+
+                <p class="graph-note">
+                    Las respuestas se guardan en este navegador.
+                    No se comparten automáticamente con otros dispositivos.
+                </p>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- ===== PIE DE PÁGINA ===== -->
+
+    <footer>
+        Formularios escolares · Puntualidad y uso del teléfono
+    </footer>
+
+    <!-- ===== JAVASCRIPT ===== -->
+
+    
+<script>
+// CLAVE COMPARTIDA CON EL APARTADO DE FORMULARIOS
+const CLAVE = "formulariosEscolares_v1";
+
+// LEER LAS RESPUESTAS GUARDADAS EN FORMULARIOS
+function cargarDatos() {
+    try {
+        const datos = JSON.parse(localStorage.getItem(CLAVE) || "{}");
+
+        // El formulario guarda las respuestas en dos listas.
+        const puntualidad = Array.isArray(datos.puntualidad)
+            ? datos.puntualidad.map(r => ({
+                ...r,
+                tipo: "puntualidad"
+            }))
+            : [];
+
+        const telefono = Array.isArray(datos.telefono)
+            ? datos.telefono.map(r => ({
+                ...r,
+                tipo: "telefono"
+            }))
+            : [];
+
+        // Unir las dos listas para mostrarlas en resultados.
+        return [...puntualidad, ...telefono];
+
+    } catch (error) {
+        return [];
+    }
+}
+
+let respuestas = cargarDatos();
+
+// CONVERTIR FECHA
+function fechaBonita(fecha) {
+    if (!fecha) return "Sin fecha";
+
+    const partes = fecha.split("-");
+
+    if (partes.length !== 3) return fecha;
+
+    return partes[2] + "/" + partes[1] + "/" + partes[0];
+}
+
+// ACTUALIZAR CONTADORES, GRÁFICA Y TABLA
+function actualizarPagina() {
+    respuestas = cargarDatos();
+
+    const puntualidad = respuestas.filter(
+        r => r.tipo === "puntualidad"
+    );
+
+    const telefono = respuestas.filter(
+        r => r.tipo === "telefono"
+    );
+
+    document.getElementById("total-p").textContent =
+        puntualidad.length;
+
+    document.getElementById("total-t").textContent =
+        telefono.length;
+
+    document.getElementById("total-general").textContent =
+        respuestas.length;
+
+    dibujarGrafica();
+    dibujarTabla();
+    dibujarDiagnosticos();
+}
+
+// OBTENER LOS ÚLTIMOS SIETE DÍAS
+function obtenerDias() {
+    const dias = [];
+    const hoy = new Date();
+
+    hoy.setHours(12, 0, 0, 0);
+
+    for (let i = 6; i >= 0; i--) {
+        const fecha = new Date(hoy);
+
+        fecha.setDate(hoy.getDate() - i);
+
+        const clave =
+            fecha.getFullYear() + "-" +
+            String(fecha.getMonth() + 1).padStart(2, "0") + "-" +
+            String(fecha.getDate()).padStart(2, "0");
+
+        dias.push({
+            clave,
+            nombre: fecha.toLocaleDateString("es-MX", {
+                weekday: "short",
+                day: "2-digit"
+            })
+        });
+    }
+
+    return dias;
+}
+
+// DIBUJAR GRÁFICA SEMANAL
+function dibujarGrafica() {
+    const canvas = document.getElementById("grafica");
+    if (!canvas) return;
+
+    const ancho = canvas.clientWidth || 600;
+    const alto = window.innerWidth <= 600 ? 250 : 300;
+    const escala = window.devicePixelRatio || 1;
+
+    canvas.width = ancho * escala;
+    canvas.height = alto * escala;
+    canvas.style.height = alto + "px";
+
+    const ctx = canvas.getContext("2d");
+
+    ctx.setTransform(escala, 0, 0, escala, 0, 0);
+    ctx.clearRect(0, 0, ancho, alto);
+
+    const dias = obtenerDias();
+
+    // Contar los registros de puntualidad por fecha.
+    const puntualidad = dias.map(dia =>
+        respuestas.filter(r =>
+            r.tipo === "puntualidad" &&
+            r.fecha === dia.clave
+        ).length
+    );
+
+    // Sumar el tiempo sin teléfono en horas.
+    const telefono = dias.map(dia =>
+        respuestas
+            .filter(r =>
+                r.tipo === "telefono" &&
+                r.fecha === dia.clave
+            )
+            .reduce((total, r) => {
+                const horas = Number(r.horasSinTelefono) || 0;
+                const minutos = Number(r.minutosSinTelefono) || 0;
+
+                return total + horas + minutos / 60;
+            }, 0)
+    );
+
+    const maximo = Math.max(1, ...puntualidad, ...telefono);
+
+    const izquierda = 38;
+    const derecha = 10;
+    const arriba = 35;
+    const abajo = 45;
+
+    const anchoGrafica = Math.max(0, ancho - izquierda - derecha);
+    const altoGrafica = alto - arriba - abajo;
+
+    // Líneas horizontales y valores.
+    ctx.font = "12px Arial";
+    ctx.textAlign = "right";
+
+    for (let i = 0; i <= 4; i++) {
+        const valor = Math.ceil(maximo * i / 4);
+        const y = arriba + altoGrafica - i / 4 * altoGrafica;
+
+        ctx.strokeStyle = "#e8e1f2";
+        ctx.beginPath();
+        ctx.moveTo(izquierda, y);
+        ctx.lineTo(ancho - derecha, y);
+        ctx.stroke();
+
+        ctx.fillStyle = "#5c5368";
+        ctx.fillText(String(valor), izquierda - 8, y + 4);
+    }
+
+    // Barras por día.
+    const grupo = anchoGrafica / 7;
+    const barra = Math.min(18, grupo * 0.28);
+
+    dias.forEach((dia, i) => {
+        const centro = izquierda + grupo * (i + 0.5);
+
+        const hp = puntualidad[i] / maximo * altoGrafica;
+        const ht = telefono[i] / maximo * altoGrafica;
+
+        // Morado: registros de puntualidad.
+        ctx.fillStyle = "#6848c7";
+        ctx.fillRect(
+            centro - barra - 2,
+            arriba + altoGrafica - hp,
+            barra,
+            hp
+        );
+
+        // Rosa: horas sin teléfono.
+        ctx.fillStyle = "#e45b9b";
+        ctx.fillRect(
+            centro + 2,
+            arriba + altoGrafica - ht,
+            barra,
+            ht
+        );
+
+        ctx.fillStyle = "#4c4358";
+        ctx.textAlign = "center";
+        ctx.fillText(dia.nombre, centro, alto - 17);
+    });
+
+    // Leyenda.
+    ctx.textAlign = "left";
+    ctx.font = "12px Arial";
+
+    ctx.fillStyle = "#6848c7";
+    ctx.fillRect(izquierda, 8, 11, 11);
+
+    ctx.fillStyle = "#292333";
+    ctx.fillText("Puntualidad", izquierda + 16, 18);
+
+    ctx.fillStyle = "#e45b9b";
+    ctx.fillRect(izquierda + 112, 8, 11, 11);
+
+    ctx.fillStyle = "#292333";
+    ctx.fillText("Horas sin teléfono", izquierda + 128, 18);
+}
+
+// MOSTRAR LAS RESPUESTAS EN LA TABLA
+// GENERAR UN DIAGNÓSTICO PERSONALIZADO POR CADA PERSONA
+// Combina la respuesta más reciente de Puntualidad y la de Uso del teléfono.
+
+function dibujarDiagnosticos() {
+    const contenedor = document.getElementById("diagnosticos");
+
+    if (!contenedor) return;
+
+    contenedor.replaceChildren();
+
+    if (respuestas.length === 0) {
+        const mensaje = document.createElement("p");
+        mensaje.className = "diagnostico-vacio";
+        mensaje.textContent =
+            "Todavía no hay respuestas. Contesta un formulario para generar tu diagnóstico personalizado.";
+        contenedor.appendChild(mensaje);
+        return;
+    }
+
+    // Agrupar las respuestas por nombre y grupo.
+    const personas = new Map();
+
+    respuestas.forEach(r => {
+        const nombre = String(r.nombre || "Participante").trim();
+        const grupo = String(r.grupo || "Sin grupo").trim();
+        const clave = (nombre + "|" + grupo).toLocaleLowerCase("es-MX");
+
+        if (!personas.has(clave)) {
+            personas.set(clave, {
+                nombre,
+                grupo,
+                puntualidad: null,
+                telefono: null
+            });
+        }
+
+        const persona = personas.get(clave);
+
+        // Conservar el registro más reciente de cada formulario.
+        if (r.tipo === "puntualidad") persona.puntualidad = r;
+        if (r.tipo === "telefono") persona.telefono = r;
+    });
+
+    // Crear elementos sin interpretar las respuestas como HTML.
+    function agregarElemento(padre, etiqueta, texto, clase = "") {
+        const elemento = document.createElement(etiqueta);
+        elemento.textContent = texto;
+
+        if (clase) elemento.className = clase;
+
+        padre.appendChild(elemento);
+        return elemento;
+    }
+
+    personas.forEach(persona => {
+        const tarjeta = document.createElement("article");
+        tarjeta.className = "diagnostico-card";
+
+        agregarElemento(
+            tarjeta,
+            "h3",
+            "Diagnóstico de " + persona.nombre +
+            " · Grupo " + persona.grupo
+        );
+
+        agregarElemento(
+            tarjeta,
+            "p",
+            "Este diagnóstico se elaboró con base en tus respuestas. " +
+            "Las propuestas son compromisos que puedes adaptar a tu rutina."
+        );
+
+        // =========================================
+        // FORMULARIO 1: PUNTUALIDAD
+        // =========================================
+
+        const rp = persona.puntualidad;
+
+        if (rp) {
+            agregarElemento(tarjeta, "h4", "1. Diagnóstico de puntualidad");
+
+            const frecuencia = String(rp.frecuencia || "")
+                .trim()
+                .toLocaleLowerCase("es-MX");
+
+            const motivo = String(rp.motivo || "").trim();
+            const mejora = String(rp.mejora || "").trim();
+
+            let resumen = "";
+            const propuestas = [];
+
+            if (frecuencia === "siempre") {
+                resumen =
+                    "Fortaleza: indicas que siempre llegas puntual. " +
+                    "El reto es mantener este hábito de manera constante.";
+
+                propuestas.push(
+                    "Compromiso 1: preparar mochila, uniforme y materiales la noche anterior."
+                );
+                propuestas.push(
+                    "Compromiso 2: conservar un margen de 10 minutos para imprevistos, si es posible."
+                );
+                propuestas.push(
+                    "Compromiso 3: revisar al final de la semana qué acciones te ayudaron a llegar a tiempo."
+                );
+
+            } else if (frecuencia === "casi siempre") {
+                resumen =
+                    "Área de oportunidad: generalmente llegas puntual, " +
+                    "pero puedes mejorar la constancia en algunos días.";
+
+                propuestas.push(
+                    "Compromiso 1: dejar listos tus materiales y tu ropa desde la noche anterior."
+                );
+                propuestas.push(
+                    "Compromiso 2: establecer una alarma para comenzar a prepararte y otra para salir."
+                );
+                propuestas.push(
+                    "Compromiso 3: registrar durante una semana los días en que llegas tarde y qué ocurrió."
+                );
+
+            } else if (frecuencia === "a veces") {
+                resumen =
+                    "Área de mejora: tus respuestas indican que la puntualidad " +
+                    "no siempre se mantiene. Conviene identificar qué dificulta tu rutina.";
+
+                propuestas.push(
+                    "Compromiso 1: organizar tus actividades de la mañana en orden y calcular cuánto tardas."
+                );
+                propuestas.push(
+                    "Compromiso 2: preparar tus pertenencias la noche anterior y revisar el transporte."
+                );
+                propuestas.push(
+                    "Compromiso 3: elegir una hora de salida realista y evaluar al final de la semana si funcionó."
+                );
+
+            } else if (frecuencia === "nunca") {
+                resumen =
+                    "Área prioritaria de mejora: indicas que no sueles llegar puntual. " +
+                    "Puedes comenzar con cambios pequeños y revisar qué obstáculos necesitas resolver.";
+
+                propuestas.push(
+                    "Compromiso 1: identificar la principal dificultad para llegar a tiempo."
+                );
+                propuestas.push(
+                    "Compromiso 2: preparar materiales y organizar la rutina desde el día anterior."
+                );
+                propuestas.push(
+                    "Compromiso 3: acordar una hora de salida posible y registrar tus avances durante una semana."
+                );
+
+            } else {
+                resumen =
+                    "Tus respuestas todavía no permiten identificar con claridad " +
+                    "tu hábito de puntualidad.";
+
+                propuestas.push(
+                    "Compromiso 1: observar durante una semana a qué hora llegas a clases."
+                );
+                propuestas.push(
+                    "Compromiso 2: preparar tus materiales antes de dormir."
+                );
+                propuestas.push(
+                    "Compromiso 3: elegir una acción concreta que facilite tu llegada puntual."
+                );
+            }
+
+            agregarElemento(tarjeta, "p", resumen);
+
+            if (motivo) {
+                agregarElemento(
+                    tarjeta,
+                    "p",
+                    "Obstáculo que identificaste: " + motivo + "."
+                );
+
+                if (motivo.toLowerCase().includes("transporte")) {
+                    propuestas[1] =
+                        "Compromiso 2: revisar las opciones y horarios de transporte y planear una alternativa cuando sea posible.";
+                } else if (
+                    motivo.toLowerCase().includes("despertar") ||
+                    motivo.toLowerCase().includes("prepararme")
+                ) {
+                    propuestas[1] =
+                        "Compromiso 2: establecer una rutina de preparación y una alarma que te permita empezar a tiempo.";
+                } else if (motivo.toLowerCase().includes("familiar")) {
+                    propuestas[1] =
+                        "Compromiso 2: identificar con anticipación qué organización o apoyo necesitas ante situaciones familiares.";
+                } else if (motivo.toLowerCase().includes("organización")) {
+                    propuestas[1] =
+                        "Compromiso 2: dividir tus actividades de la mañana en pasos y asignar tiempo para cada uno.";
+                }
+            }
+
+            if (mejora) {
+                agregarElemento(
+                    tarjeta,
+                    "p",
+                    "Tu propuesta personal: " + mejora
+                );
+
+                propuestas[2] =
+                    "Compromiso 3: poner en práctica tu propuesta personal (" +
+                    mejora + ") y revisar al final de la semana qué resultado obtuviste.";
+            }
+
+            agregarElemento(tarjeta, "h4", "Tres compromisos de cambio");
+            const lista = document.createElement("ul");
+
+            propuestas.slice(0, 3).forEach(propuesta => {
+                agregarElemento(lista, "li", propuesta);
+            });
+
+            tarjeta.appendChild(lista);
+        }
+
+        // =========================================
+        // FORMULARIO 2: USO DEL TELÉFONO
+        // =========================================
+
+        const rt = persona.telefono;
+
+        if (rt) {
+            agregarElemento(tarjeta, "h4", "2. Diagnóstico de uso del teléfono");
+
+            const horasRegistradas =
+                Number(rt.horasSinTelefono) || 0;
+
+            const minutosRegistrados =
+                Number(rt.minutosSinTelefono) || 0;
+
+            const totalMinutos =
+                Number(rt.totalMinutosSinTelefono != null
+                    ? rt.totalMinutosSinTelefono
+                    : horasRegistradas * 60 + minutosRegistrados);
+
+            const horas = Math.floor(totalMinutos / 60);
+            const minutos = Math.round(totalMinutos % 60);
+
+            agregarElemento(
+                tarjeta,
+                "p",
+                "Registraste " + horas + " horas y " + minutos +
+                " minutos sin usar el teléfono."
+            );
+
+            const propuestas = [];
+            let resumen = "";
+
+            if (totalMinutos === 0) {
+                resumen =
+                    "Puedes comenzar con periodos breves sin pantalla e identificar " +
+                    "qué actividades te ayudarían a sentirte cómodo durante ese tiempo.";
+
+                propuestas.push(
+                    "Compromiso 1: dedicar de 10 a 15 minutos a una actividad sin teléfono."
+                );
+                propuestas.push(
+                    "Compromiso 2: elegir un momento concreto, como una comida o un periodo de estudio, para hacer una pausa de pantalla."
+                );
+                propuestas.push(
+                    "Compromiso 3: probar una actividad alternativa y registrar cómo te sentiste."
+                );
+
+            } else if (totalMinutos < 30) {
+                resumen =
+                    "Ya registraste un periodo sin teléfono. Puedes aprovecharlo " +
+                    "como punto de partida para desarrollar el hábito gradualmente.";
+
+                propuestas.push(
+                    "Compromiso 1: repetir el periodo sin teléfono en un momento específico del día."
+                );
+                propuestas.push(
+                    "Compromiso 2: preparar una actividad alternativa, como leer, dibujar o conversar."
+                );
+                propuestas.push(
+                    "Compromiso 3: anotar qué te ayudó y qué te dificultó mantener la pausa."
+                );
+
+            } else if (totalMinutos < 120) {
+                resumen =
+                    "Lograste mantener un periodo de desconexión. Puedes trabajar " +
+                    "en la constancia y reconocer qué actividades te resultan más fáciles sin pantalla.";
+
+                propuestas.push(
+                    "Compromiso 1: reservar un horario para realizar una actividad sin teléfono."
+                );
+                propuestas.push(
+                    "Compromiso 2: activar el modo concentración durante una actividad que requiera atención."
+                );
+                propuestas.push(
+                    "Compromiso 3: repetir una pausa que te haya funcionado y registrar tu experiencia."
+                );
+
+            } else {
+                resumen =
+                    "Registraste dos horas o más sin teléfono. Identifica qué " +
+                    "condiciones facilitaron ese tiempo y busca mantener un equilibrio saludable.";
+
+                propuestas.push(
+                    "Compromiso 1: conservar un momento del día para una actividad sin pantalla."
+                );
+                propuestas.push(
+                    "Compromiso 2: continuar con actividades que disfrutas fuera del teléfono."
+                );
+                propuestas.push(
+                    "Compromiso 3: evaluar al final de la semana qué hábitos te ayudaron a equilibrar el uso del dispositivo."
+                );
+            }
+
+            agregarElemento(tarjeta, "p", resumen);
+
+            const dificultad = String(rt.dificultad || "").trim();
+            const actividad = String(rt.actividadAlternativa || "").trim();
+            const aprendizaje = String(rt.aprendizaje || "").trim();
+
+            if (dificultad) {
+                agregarElemento(
+                    tarjeta,
+                    "p",
+                    "Dificultad que mencionaste: " + dificultad + "."
+                );
+
+                propuestas[1] =
+                    "Compromiso 2: ante esta dificultad (" + dificultad +
+                    "), preparar una alternativa concreta para la próxima pausa.";
+            }
+
+            if (actividad) {
+                agregarElemento(
+                    tarjeta,
+                    "p",
+                    "Actividad que realizaste: " + actividad + "."
+                );
+
+                propuestas[2] =
+                    "Compromiso 3: reservar un momento para repetir la actividad que mencionaste (" +
+                    actividad + ") y valorar cómo te ayuda.";
+            } else if (aprendizaje) {
+                propuestas[2] =
+                    "Compromiso 3: poner en práctica este aprendizaje: " +
+                    aprendizaje + " y revisar tus avances al final de la semana.";
+            }
+
+            if (rt.sentimientos) {
+                agregarElemento(
+                    tarjeta,
+                    "p",
+                    "Cómo te sentiste: " + rt.sentimientos + "."
+                );
+            }
+
+            if (rt.momentoSinTelefono) {
+                agregarElemento(
+                    tarjeta,
+                    "p",
+                    "Momento sin teléfono: " + rt.momentoSinTelefono + "."
+                );
+            }
+
+            agregarElemento(tarjeta, "h4", "Tres compromisos de cambio");
+
+            const lista = document.createElement("ul");
+
+            propuestas.slice(0, 3).forEach(propuesta => {
+                agregarElemento(lista, "li", propuesta);
+            });
+
+            tarjeta.appendChild(lista);
+        }
+
+        contenedor.appendChild(tarjeta);
+    });
+}
+
+
+function dibujarTabla() {
+    const contenedor = document.getElementById("tabla-respuestas");
+
+    if (!contenedor) return;
+
+    if (respuestas.length === 0) {
+        contenedor.innerHTML =
+            '<p class="empty">Todavía no hay respuestas guardadas.</p>';
+        return;
+    }
+
+    const tabla = document.createElement("table");
+
+    tabla.innerHTML = `
+        <thead>
+            <tr>
+                <th>Fecha</th>
+                <th>Formulario</th>
+                <th>Nombre</th>
+                <th>Grupo</th>
+                <th>Hora de llegada</th>
+                <th>Hora de salida</th>
+                <th>Tiempo sin teléfono</th>
+                <th>Respuesta principal</th>
+            </tr>
+        </thead>
+    `;
+
+    const cuerpo = document.createElement("tbody");
+
+    [...respuestas].reverse().forEach(r => {
+        const fila = document.createElement("tr");
+
+        const principal = r.tipo === "puntualidad"
+            ? (r.frecuencia || r.motivo || r.mejora || "")
+            : (
+                r.sentimientos ||
+                r.aprendizaje ||
+                r.momentoSinTelefono ||
+                ""
+            );
+
+        const tiempo = r.tipo === "telefono"
+            ? (
+                (
+                    (Number(r.horasSinTelefono) || 0) +
+                    (Number(r.minutosSinTelefono) || 0) / 60
+                ).toLocaleString("es-MX", {
+                    maximumFractionDigits: 2
+                }) + " h"
+            )
+            : "—";
+
+        const dias = Array.isArray(r.diaSemana)
+            ? r.diaSemana.join(", ")
+            : "";
+
+        const valores = [
+            fechaBonita(r.fecha),
+            r.tipo === "puntualidad"
+                ? "Puntualidad"
+                : "Uso del teléfono",
+            r.nombre || "",
+            r.grupo || "",
+            r.horaLlegada || "—",
+            r.horaSalidaCasa || "—",
+            tiempo,
+            principal + (dias ? " · " + dias : "")
+        ];
+
+        valores.forEach(valor => {
+            const celda = document.createElement("td");
+            celda.textContent = valor;
+            fila.appendChild(celda);
+        });
+
+        cuerpo.appendChild(fila);
+    });
+
+    tabla.appendChild(cuerpo);
+    contenedor.replaceChildren(tabla);
+}
+// BORRAR TODAS LAS RESPUESTAS
+document.getElementById("borrar-datos").addEventListener("click", () => {
+    if (!confirm("¿Deseas borrar todas las respuestas guardadas?")) {
+        return;
+    }
+
+    localStorage.setItem(
+        CLAVE,
+        JSON.stringify({
+            puntualidad: [],
+            telefono: []
+        })
+    );
+
+    actualizarPagina();
+});
+
+// ACTUALIZAR AL CAMBIAR EL TAMAÑO DE LA VENTANA
+window.addEventListener("resize", dibujarGrafica);
+
+// ACTUALIZAR SI CAMBIAN LOS DATOS EN OTRA PESTAÑA
+window.addEventListener("storage", actualizarPagina);
+
+// CARGAR LOS DATOS AL ABRIR LA PÁGINA
+actualizarPagina();
+</script>

@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Tiempo, Mi Cambio</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --morado: #6550bd;
+            --oscuro: #44318f;
+            --lila: #e9ddf7;
+            --rosa: #f28bc2;
+            --texto: #29233a;
+        }
+
+        html, body {
+            width: 100%;
+            min-height: 100%;
+        }
+
+        body {
+            font-family: "Segoe UI", Arial, sans-serif;
+            color: var(--texto);
+            background: #f5effb;
+        }
+        nav {
+            padding: 18px clamp(18px, 6vw, 80px);
+            background: linear-gradient(
+                100deg,
+                var(--oscuro),
+                var(--morado)
+            );
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 18px;
+            flex-wrap: wrap;
+            box-shadow: 0 5px 20px #44318f30;
+        }
+
+        .logo {
+            color: #fff;
+            font-size: clamp(18px, 2vw, 23px);
+            font-weight: 800;
+        }
+
+        .enlaces {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .enlaces a {
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 650;
+            padding: 10px 14px;
+            border-radius: 999px;
+            transition: 0.25s;
+        }
+
+        .enlaces a:hover,
+        .enlaces a.activo {
+            background: white;
+            color: var(--oscuro);
+            transform: translateY(-2px);
+        }
+        .barra {
+            height: 8px;
+            background: linear-gradient(
+                90deg,
+                var(--rosa),
+                #bba5ff,
+                var(--morado)
+            );
+        }
+        .portada {
+            width: 100%;
+            min-height: calc(100vh - 75px);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 50px;
+            padding: 60px 8%;
+            background: linear-gradient(
+                120deg,
+                #ffffff 40%,
+                #eadcf7 100%
+            );
+        }
+
+        .texto {
+            flex: 1;
+        }
+
+        .texto h1 {
+            color: var(--oscuro);
+            font-size: clamp(35px, 4.5vw, 60px);
+            font-weight: normal;
+            line-height: 1.25;
+            margin-bottom: 25px;
+        }
+
+        .texto p {
+            font-size: 18px;
+            line-height: 1.8;
+            max-width: 420px;
+            margin-bottom: 30px;
+            color: #655b78;
+        }
+
+        .boton {
+            display: inline-block;
+            background: var(--morado);
+            color: white;
+            padding: 15px 30px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: 650;
+            transition: 0.3s;
+        }
+
+        .boton:hover {
+            background: #e45b9b;
+            transform: translateY(-3px);
+        }
+        .imagen {
+            flex: 1.1;
+        }
+
+        .imagen img {
+            width: 100%;
+            max-height: 430px;
+            height: 45vh;
+            min-height: 250px;
+            object-fit: cover;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px #7863b033;
+        }
+        .habitos {
+            min-height: 300px;
+            padding: 70px 20px;
+            text-align: center;
+            background: #f5effb;
+        }
+
+        .habitos h2 {
+            font-size: 32px;
+            color: var(--morado);
+            margin-bottom: 20px;
+        }
+
+        .habitos p {
+            max-width: 750px;
+            margin: auto;
+            font-size: 17px;
+            line-height: 1.8;
+            color: #655b78;
+        }
+        footer {
+            background: var(--oscuro);
+            color: white;
+            text-align: center;
+            padding: 22px;
+            font-size: 13px;
+        }
+        @media (max-width: 760px) {
+            nav {
+                justify-content: center;
+            }
+
+            .logo {
+                width: 100%;
+                text-align: center;
+            }
+
+            .enlaces {
+                justify-content: center;
+            }
+
+            .portada {
+                min-height: calc(100vh - 130px);
+                flex-direction: column;
+                justify-content: center;
+                padding: 45px 7%;
+                gap: 35px;
+            }
+
+            .texto h1 {
+                font-size: 36px;
+            }
+
+            .texto p {
+                font-size: 16px;
+            }
+
+            .imagen {
+                width: 100%;
+            }
+
+            .imagen img {
+                height: 280px;
+            }
+        }
+
+        @media (max-width: 430px) {
+            .enlaces {
+                gap: 3px;
+            }
+
+            .enlaces a {
+                padding: 9px 10px;
+                font-size: 12px;
+            }
+
+            .habitos h2 {
+                font-size: 27px;
+            }
+
+            .hero {
+                padding-top: 35px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <div class="logo">◉ Mi Tiempo, Mi Cambio ♡</div>
+
+            <div class="enlaces">
+                <a href="index.html" class="activo">Inicio</a>
+                <a href="informacion.html">Información</a>
+                <a href="retos.html">Retos</a>
+                <a href="resultados.html">Resultados</a>
+            </div>
+        </nav>
+    </header>
+    <div class="barra"></div>
+    <main>
+        <section class="portada" id="inicio">
+
+            <div class="texto">
+                <h1>
+                    Pequeños hábitos,<br>
+                    grandes cambios
+                </h1>
+
+                <p>
+                    Tu tiempo y tu atención también son
+                    parte de tu futuro. Organiza tus días,
+                    establece metas y comienza a cambiar.
+                </p>
+
+                <a href="retos.html" class="boton">
+                    Empieza ahora
+                </a>
+            </div>
+
+            <div class="imagen">
+                <img
+                    src="img.png"
+                    alt="Espacio de trabajo y organización">
+            </div>
+
+        </section>
+        <section class="habitos" id="habitos">
+            <h2>Organiza tu tiempo ♡</h2>
+
+            <p>
+                Cada pequeño hábito puede ayudarte a alcanzar
+                tus metas. Planifica tus actividades, dedica
+                tiempo a estudiar y reserva momentos para ti.
+            </p>
+        </section>
+    </main>
+    <footer>
+        Mi Tiempo, Mi Cambio · Cada pequeño paso cuenta ♡
+    </footer>
+
+</body>
+</html>

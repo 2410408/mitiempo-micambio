@@ -1,0 +1,93 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nuestros Retos | Mi Tiempo, Mi Cambio</title>
+<style>
+:root{--morado:#6550bd;--oscuro:#44318f;--lila:#e9ddf7;--rosa:#f28bc2;--texto:#29233a}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"Segoe UI",Arial,sans-serif;background:linear-gradient(135deg,#f7f1ff,#fceafa 55%,#eee7ff);color:var(--texto);min-height:100vh}
+nav{padding:18px clamp(18px,6vw,80px);background:linear-gradient(100deg,var(--oscuro),var(--morado));display:flex;justify-content:space-between;align-items:center;gap:18px;flex-wrap:wrap;box-shadow:0 5px 20px #44318f30}
+.logo{color:#fff;font-size:clamp(18px,2vw,23px);font-weight:800}
+.enlaces{display:flex;gap:8px;flex-wrap:wrap}
+.enlaces a{color:white;text-decoration:none;font-size:14px;font-weight:650;padding:10px 14px;border-radius:999px;transition:.25s}
+.enlaces a:hover,.enlaces a.activo{background:white;color:var(--oscuro);transform:translateY(-2px)}
+.barra{height:8px;background:linear-gradient(90deg,var(--rosa),#bba5ff,var(--morado))}
+.hero{max-width:1150px;margin:auto;padding:48px 24px 26px;text-align:center}
+.etiqueta{display:inline-block;background:#ffe2f1;color:#9b3474;border:1px solid #f5b5d9;padding:7px 15px;border-radius:999px;font-size:12px;font-weight:800;letter-spacing:1.4px;text-transform:uppercase;margin-bottom:15px}
+h1{color:var(--oscuro);font-size:clamp(30px,5vw,46px);line-height:1.15;margin-bottom:13px}
+.intro{max-width:660px;margin:auto;color:#655b78;font-size:16px;line-height:1.7}
+.contenedor{max-width:1150px;margin:auto;padding:12px 24px 60px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:26px}
+.ventana{background:#ffffffdf;border:1px solid #e4d7f4;border-radius:22px;overflow:hidden;box-shadow:0 12px 35px #51417d17;transition:transform .25s,box-shadow .25s}
+.ventana:hover{transform:translateY(-5px);box-shadow:0 18px 40px #51417d25}
+.titulo{background:linear-gradient(110deg,#f5acd5,#d5c4ff);padding:12px 18px;display:flex;align-items:center;gap:7px;border-bottom:1px solid #e5d4f1}
+.punto{width:10px;height:10px;border-radius:50%;background:white;border:1px solid #9c7eac}
+.nombre-ventana{margin-left:auto;font-size:11px;font-weight:700;color:#5b4777}
+.contenido{padding:25px}
+.encabezado{display:flex;align-items:center;gap:16px;margin-bottom:25px}
+.icono{width:66px;height:66px;min-width:66px;display:grid;place-items:center;border-radius:20px;background:linear-gradient(145deg,#fce3f2,#e7dcff);font-size:32px;box-shadow:inset 0 0 0 1px #e7d4f7}
+.encabezado h2{color:var(--oscuro);font-size:22px;margin-bottom:6px}
+.descripcion{color:#6a6078;font-size:14px;line-height:1.55}
+.columnas{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.bloque{border-radius:16px;padding:16px 14px;background:#f8f5ff;border:1px solid #e8def7}
+.bloque.desventajas{background:#fff4fa;border-color:#f7d9e9}
+.subtitulo{text-align:center;color:white;background:var(--morado);padding:10px 8px;border-radius:12px;margin-bottom:13px;font-size:14px}
+.desventajas .subtitulo{background:#d65d9e}
+ul{list-style:none}
+li{position:relative;padding-left:18px;margin-bottom:11px;font-size:13px;line-height:1.5;color:#51475f}
+li:last-child{margin-bottom:0}
+.bloque:not(.desventajas) li:before{content:"✓";position:absolute;left:0;color:#6550bd;font-weight:900}
+.desventajas li:before{content:"•";position:absolute;left:3px;color:#d65d9e;font-weight:900}
+footer{text-align:center;padding:22px;color:#716580;font-size:13px}
+
+@media(max-width:760px){nav{justify-content:center}.logo{width:100%;text-align:center}.enlaces{justify-content:center}.contenedor{grid-template-columns:1fr;max-width:620px}}
+@media(max-width:430px){.enlaces{gap:3px}.enlaces a{padding:9px 10px;font-size:12px}.contenido{padding:18px}.columnas{grid-template-columns:1fr}.hero{padding-top:35px}}
+</style>
+</head>
+<body>
+
+
+<header><nav>
+<div class="logo">◉ Mi Tiempo, Mi Cambio ♡</div>
+<div class="enlaces">
+<a href="index.html">Inicio</a><a href="informacion.html" class="activo">Información</a><a href="retos.html">Retos</a><a href="resultados.html">Resultados</a>
+</div>
+</nav></header>
+<div class="barra"></div>
+<main>
+<section class="hero">
+<span class="etiqueta">Pequeños cambios, grandes logros</span>
+<h1>Nuestros retos</h1>
+<p class="intro">Descubre cómo mejorar tus hábitos día a día. Practicar la puntualidad y controlar el uso del teléfono puede ayudarte a aprovechar mejor tu tiempo.</p>
+</section>
+<section class="contenedor">
+<article class="ventana">
+<div class="titulo"><span class="punto"></span><span class="punto"></span><span class="punto"></span><span class="nombre-ventana">RETO 01 · HÁBITOS</span></div>
+<div class="contenido">
+<div class="encabezado"><div class="icono" aria-hidden="true">⏰</div><div><h2>1. Puntualidad</h2><p class="descripcion">Llegar a tiempo también es una forma de respeto y compromiso.</p></div></div>
+<div class="columnas">
+<div class="bloque"><h3 class="subtitulo">✓ Ventajas</h3><ul>
+<li>Te da más tiempo para organizarte.</li><li>Evitas el estrés y la prisa.</li><li>Mejora tu rendimiento en clase.</li><li>Demuestra responsabilidad.</li>
+</ul></div>
+<div class="bloque desventajas"><h3 class="subtitulo">! Desventajas</h3><ul>
+<li>Dificultad para acceder a la institucion por horario de entrada.</li><li>Puede generar cansancio.</li><li>imprevistos como tráfico o transporte.</li>
+</ul></div>
+</div></div></article>
+<article class="ventana">
+<div class="titulo"><span class="punto"></span><span class="punto"></span><span class="punto"></span><span class="nombre-ventana">RETO 02 · BIENESTAR DIGITAL</span></div>
+<div class="contenido">
+<div class="encabezado"><div class="icono" aria-hidden="true">📵</div><div><h2>2. Uso del teléfono</h2><p class="descripcion">Menos distracciones, más enfoque en lo importante.</p></div></div>
+<div class="columnas">
+<div class="bloque"><h3 class="subtitulo">✓ Ventajas</h3><ul>
+<li>Te mantiene conectado con tu familia y amigos.</li><li>Puedes aprender y buscar información.</li><li>Sirve para emergencias.</li><li>Te ayuda a organizarte.</li>
+</ul></div>
+<div class="bloque desventajas"><h3 class="subtitulo">! Desventajas</h3><ul>
+<li>Te quita tiempo y enfoque.</li><li>Puede causar ansiedad o estrés.</li><li>Disminuye tu rendimiento escolar.</li><li>Puede afectar tu sueño y tu salud mental.</li>
+</ul></div>
+</div></div></article>
+</section>
+</main>
+<footer>Mi Tiempo, Mi Cambio · Cada hábito cuenta ♡</footer>
+</body></html>
